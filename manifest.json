@@ -4,7 +4,6 @@
       "js/background.js"
     ]
   },
-  "default_locale": "en",
   "name": "Instant Smart Quotes",
   "description": "Replace typewriter quotes, apostrophes, ellipses and dashes with their typographically correct counterparts as you type.",
   "author": "Florian Zemke",
