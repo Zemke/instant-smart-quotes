@@ -1,11 +1,14 @@
 {
-"update_url": "https://clients2.google.com/service/update2/crx",
-
-  "background": {"scripts": ["js/background.js"]},
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
+  "default_locale": "en",
   "name": "Instant Smart Quotes",
   "description": "Replace typewriter quotes, apostrophes, ellipses and dashes with their typographically correct counterparts as you type.",
   "author": "Florian Zemke",
-  "homepage_url": "http://github.com/Zemke/smart-quotes",
+  "homepage_url": "https://github.com/Zemke/instant-smart-quotes",
   "icons": {
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
@@ -20,9 +23,13 @@
   "manifest_version": 2,
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": [
+        "*://*/*"
+      ],
       "css": [],
-      "js": ["js/bookmarklet.js"]
+      "js": [
+        "js/bookmarklet.js"
+      ]
     }
   ]
 }
