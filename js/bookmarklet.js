@@ -1,6 +1,6 @@
 /**
  * Smart Quotes by Florian Zemke, regex by manki.in
- * https://github.com/Zemke/smart-quotes
+ * https://github.com/Zemke/instant-smart-quotes
  *
  * Replace typewriter quotes, apostrophes, ellipses and dashes
  * with their typographically correct counterparts as you type.
@@ -19,6 +19,7 @@ document.addEventListener('input', function () {
    */
   var isTextField = function (activeElement) {
     if (activeElement.tagName.toUpperCase() == 'TEXTAREA'
+      || activeElement.isContentEditable
       || (activeElement.tagName.toUpperCase() == 'INPUT'
       && activeElement.type.toUpperCase() == 'TEXT'))   {
       return true;
@@ -35,7 +36,7 @@ document.addEventListener('input', function () {
    * @returns {Number} The number of characters until the end of the string.
    */
   var charsTillEndOfStr = function (activeElement) {
-    return activeElement.value.length - activeElement.selectionStart;
+    return getValue(activeElement).length - getSelectionStart(activeElement);
   };
 
   /**
@@ -49,8 +50,8 @@ document.addEventListener('input', function () {
    * @returns {Number} The correct position of the caret.
    */
   var correctCaretPosition = function (activeElement, charsTillEndOfStr) {
-    var correctCaretPos = activeElement.value.length - charsTillEndOfStr;
-    activeElement.selectionStart, activeElement.selectionEnd = correctCaretPos;
+    var correctCaretPos = getValue(activeElement).length - charsTillEndOfStr;
+    setSelection(activeElement, correctCaretPos);
     return correctCaretPos;
   };
 
@@ -63,9 +64,9 @@ document.addEventListener('input', function () {
    */
   var processTextField = function (activeElement) {
     var charsTillEnfOfStrBeforeRegex = charsTillEndOfStr(activeElement);
-    activeElement.value = replaceTypewriterPunctuation(activeElement.value);
+    setValue(activeElement, replaceTypewriterPunctuation(getValue(activeElement)));
     correctCaretPosition(activeElement, charsTillEnfOfStrBeforeRegex);
-    return activeElement.value;
+    return getValue(activeElement);
   };
 
   /**
@@ -116,6 +117,42 @@ document.addEventListener('input', function () {
       .replace(/(\w|\s)-{3}(\w|\s)/g, "$1—$2")
       .replace(/(\w|\s)-{2}(\w|\s)/g, "$1–$2")
       .replace(/([^\\\.…])\.{3}([^\.…])/g, "$1…$2");
+  };
+
+  var getValue = function (activeElement) {
+    if (activeElement.isContentEditable) {
+      return activeElement.innerText;
+    }
+    return activeElement.value;
+  };
+
+  var setValue = function (activeElement, newValue) {
+    if (activeElement.isContentEditable) {
+      return activeElement.innerText = newValue;
+    }
+    return activeElement.value = newValue;
+  };
+
+  var getSelectionStart = function (activeElement) {
+    if (activeElement.isContentEditable) {
+      return document.getSelection().anchorOffset;
+    }
+    return activeElement.selectionStart;
+  };
+
+  var setSelection = function (activeElement, correctCaretPos) {
+    if (activeElement.isContentEditable) {
+      var range = document.createRange();
+      var sel = window.getSelection();
+      range.setStart(activeElement.childNodes[0], correctCaretPos);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      return;
+    }
+
+    activeElement.selectionStart = correctCaretPos;
+    activeElement.selectionEnd = correctCaretPos;
   };
 
   /**
