@@ -6,7 +6,7 @@ var BADGE = {
   },
   OFF: {
     TEXT: 'OFF',
-    COLOR: '#DBC200'
+    COLOR: '#6B0031'
   }
 };
 
