@@ -121,14 +121,20 @@ document.addEventListener('input', function () {
 
   var getValue = function (activeElement) {
     if (activeElement.isContentEditable) {
-      return activeElement.innerText;
+      return document.getSelection().anchorNode.textContent;
     }
     return activeElement.value;
   };
 
   var setValue = function (activeElement, newValue) {
     if (activeElement.isContentEditable) {
-      return activeElement.innerText = newValue;
+      var sel = document.getSelection();
+
+      if (!isTextNode(sel.anchorNode)) {
+        return;
+      }
+
+      return sel.anchorNode.textContent = newValue;
     }
     return activeElement.value = newValue;
   };
@@ -144,7 +150,15 @@ document.addEventListener('input', function () {
     if (activeElement.isContentEditable) {
       var range = document.createRange();
       var sel = window.getSelection();
-      range.setStart(activeElement.childNodes[0], correctCaretPos);
+
+      if (!isTextNode(sel.anchorNode)) {
+        var textNode = document.createTextNode("");
+        sel.anchorNode.insertBefore(textNode, sel.anchorNode.childNodes[0]);
+        range.setStart(textNode, 0);
+      } else {
+        range.setStart(sel.anchorNode, correctCaretPos);
+      }
+
       range.collapse(true);
       sel.removeAllRanges();
       sel.addRange(range);
@@ -153,6 +167,10 @@ document.addEventListener('input', function () {
 
     activeElement.selectionStart = correctCaretPos;
     activeElement.selectionEnd = correctCaretPos;
+  };
+
+  var isTextNode = function (node) {
+    return node.nodeType === 3;
   };
 
   /**
