@@ -164,7 +164,6 @@ document.addEventListener('input', function () {
   var main = function () {
     var activeElement = document.activeElement;
     if (!isTextField(activeElement)) {
-      console.log('Active element is not a text field.');
       return false;
     }
     return processTextField(activeElement);
