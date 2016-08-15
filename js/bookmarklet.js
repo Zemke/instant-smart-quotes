@@ -1,5 +1,5 @@
-/**
- * Smart Quotes by Florian Zemke, regex by manki.in
+/*
+ * Instant Smart Quotes by Florian Zemke, Regex by Muthu Kannan
  * https://github.com/Zemke/instant-smart-quotes
  *
  * Replace typewriter quotes, apostrophes, ellipses and dashes
