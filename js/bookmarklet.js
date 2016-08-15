@@ -7,6 +7,9 @@
  *
  * Wrap in braces {{"The brace's chars will be ignored."}} to ignore.
  */
+
+var isEnabled = true;
+
 document.addEventListener('input', function () {
 
   /**
@@ -181,9 +184,15 @@ document.addEventListener('input', function () {
    */
   var main = function () {
     var activeElement = document.activeElement;
-    if (!isTextField(activeElement)) {
-      return false;
+    if (isEnabled && isTextField(activeElement)) {
+      return processTextField(activeElement);
     }
-    return processTextField(activeElement);
+    return false;
   }; main();
 });
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    isEnabled = request.isEnabled;
+    sendResponse();
+  });
