@@ -28,7 +28,8 @@
       ],
       "js": [
         "js/bookmarklet.js"
-      ]
+      ],
+      "all_frames": true
     }
   ]
 }
