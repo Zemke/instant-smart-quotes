@@ -1,13 +1,6 @@
 var BADGE = {
-  ON: {
-    TEXT: 'ON',
-    COLOR: '#00A850'
-
-  },
-  OFF: {
-    TEXT: 'OFF',
-    COLOR: '#6B0031'
-  }
+  ON:  {TEXT: 'ON',  COLOR: '#00A850'},
+  OFF: {TEXT: 'OFF', COLOR: '#6B0031'}
 };
 
 chrome.browserAction.onClicked.addListener(function(tab) {
