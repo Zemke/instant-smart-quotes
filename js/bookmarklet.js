@@ -191,8 +191,7 @@ document.addEventListener('input', function () {
   }; main();
 });
 
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
-    isEnabled = request.isEnabled;
-    sendResponse();
-  });
+chrome.runtime.onMessage.addListener(function (request, sender, cb) {
+  isEnabled = request.isEnabled;
+  cb();
+});
