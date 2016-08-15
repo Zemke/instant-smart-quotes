@@ -5,7 +5,7 @@
  * Replace typewriter quotes, apostrophes, ellipses and dashes
  * with their typographically correct counterparts as you type.
  *
- * Wrap in braces {{"The brace's chars will be ignored."}} to ignore.
+ * Wrap in backticks `"Thou shalt not use dumb quotes."` to ignore.
  */
 
 var isEnabled = true;
@@ -81,7 +81,7 @@ document.addEventListener('input', function () {
    *  have been replaced.
    */
   var replaceTypewriterPunctuation = function (g) {
-    var splitterRegex = /\{{2}[\S\s]*?\}{2}/g;
+    var splitterRegex = /`[\S\s]*?`/g;
     var f = false,
       d = "",
       h = g.split(splitterRegex);
