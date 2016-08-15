@@ -13,13 +13,10 @@ var isEnabled = true;
 document.addEventListener('input', function () {
 
   var isTextField = function (activeElement) {
-    if (activeElement.tagName.toUpperCase() == 'TEXTAREA'
-      || activeElement.isContentEditable
-      || (activeElement.tagName.toUpperCase() == 'INPUT'
-      && activeElement.type.toUpperCase() == 'TEXT'))   {
-      return true;
-    }
-    return false;
+    return !!(activeElement.tagName.toUpperCase() == 'TEXTAREA'
+           || activeElement.isContentEditable
+           || (activeElement.tagName.toUpperCase() == 'INPUT'
+           && activeElement.type.toUpperCase() == 'TEXT'));
   };
 
   var charsTillEndOfStr = function (activeElement) {
