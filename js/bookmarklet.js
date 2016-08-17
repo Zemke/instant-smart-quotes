@@ -8,7 +8,7 @@
  * Wrap in backticks `"Thou shalt not use dumb quotes."` to ignore.
  */
 
-var isEnabled = true;
+var isEnabled;
 
 document.addEventListener('input', function () {
 
@@ -135,7 +135,25 @@ document.addEventListener('input', function () {
   }; main();
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, cb) {
-  isEnabled = request.isEnabled;
-  cb();
+var getLocation = function () {
+  var pathnameWithoutTrailingSlash;
+
+  if (location.pathname[location.pathname.length - 1] === '/') {
+    pathnameWithoutTrailingSlash = location.pathname.substr(0, location.pathname.length - 1);
+  } else {
+    pathnameWithoutTrailingSlash = location.pathname;
+  }
+
+  return location.host + pathnameWithoutTrailingSlash;
+};
+
+chrome.runtime.onMessage.addListener(function (req, sender, cb) {
+  isEnabled = req.isEnabled;
+  cb({location: getLocation()});
 });
+
+chrome.runtime.sendMessage({question: 'isEnabled', location: getLocation()}, function(res) {
+  isEnabled = res.isEnabled;
+});
+
+console.log('Hey! It’s me—Instant Smart Quotes! I noticed that I’m currently on the page %s.', getLocation());

@@ -19,7 +19,9 @@
     ]
   },
   "permissions": [
-    "<all_urls>"
+    "<all_urls>",
+    "storage",
+    "tabs"
   ],
   "content_scripts": [
     {
