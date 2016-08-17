@@ -9,6 +9,12 @@ var disabledPages;
 chrome.browserAction.onClicked.addListener(function (tab) {
   setBadge(currentBadge === BADGE.ON ? BADGE.OFF : BADGE.ON, tab.id);
   chrome.tabs.sendMessage(tab.id, {isEnabled: (currentBadge === BADGE.ON)}, function (res) {
+    if (!res) {
+      // When the extension had just been installed and the page has not yet been refreshed,
+      // the content script will not yet have loaded and the page would therefor need a refresh.
+      return;
+    }
+
     var indexOfDisabledPage = disabledPages.indexOf(res.location);
 
     if (currentBadge === BADGE.ON && indexOfDisabledPage !== -1) {
