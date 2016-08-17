@@ -30,12 +30,12 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
     if (!disabledPagesFromStorage) {
       cb({isEnabled: true});
       disabledPages = [];
-      setBadge(BADGE.ON);
+      setBadge(BADGE.ON, sender.tab.id);
     } else {
       var isEnabled = disabledPagesFromStorage.indexOf(req.location) === -1;
       cb({isEnabled: isEnabled});
       disabledPages = disabledPagesFromStorage;
-      setBadge(isEnabled ? BADGE.ON : BADGE.OFF);
+      setBadge(isEnabled ? BADGE.ON : BADGE.OFF, sender.tab.id);
     }
   });
 
@@ -44,13 +44,6 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
 
 function setBadge(newBadge, tabId) {
   currentBadge = newBadge;
-
-  if (isUndefined(tabId)) {
-    chrome.tabs.getCurrent(function (tab) {
-      setBadge(currentBadge, isUndefined(tab) ? null : tab.id);
-    });
-    return;
-  }
 
   chrome.browserAction.setBadgeText({text: currentBadge.TEXT, tabId: tabId});
   chrome.browserAction.setBadgeBackgroundColor({color: currentBadge.COLOR, tabId: tabId});
