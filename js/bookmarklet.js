@@ -155,5 +155,3 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
 chrome.runtime.sendMessage({question: 'isEnabled', location: getLocation()}, function(res) {
   isEnabled = res.isEnabled;
 });
-
-console.log('Hey! It’s me—Instant Smart Quotes! I noticed that I’m currently on the page %s.', getLocation());
