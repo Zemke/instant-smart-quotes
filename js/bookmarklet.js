@@ -102,11 +102,13 @@ document.addEventListener('input', function () {
   };
 
   var setSelection = function (activeElement, correctCaretPos) {
+    // TODO Firefox works differently. So, this only works for Chrome.
+    // Chrome puts `<div>blahblah<br></div>`, Firefox puts `blahblah<br></br>`
     if (activeElement.isContentEditable) {
       var range = document.createRange();
       var sel = window.getSelection();
 
-      if (!isTextNode(sel.anchorNode)) {
+      if (!isTextNode(sel.anchorNode) || (sel.anchorNode.previousSibling === null && !isTextNode(sel.anchorNode))) {
         var textNode = document.createTextNode("");
         sel.anchorNode.insertBefore(textNode, sel.anchorNode.childNodes[0]);
         range.setStart(textNode, 0);
