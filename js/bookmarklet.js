@@ -63,13 +63,13 @@ document.addEventListener('input', function () {
 
   var regex = function (g) {
     return g
-      .replace(/(\s|^|\(|\>|\])(")(?=[^>\]]*(<|\[|$))/g, "$1“")
-      .replace(/(\s|^|\(|\>|\])(')(?=[^>\]]*(<|\[|$))/g, "$1‘")
-      .replace(/([^0-9])(")(?=[^>\]]*(<|\[|$))/g, "$1”")
-      .replace(/([^0-9])(')(?=[^>\]]*(<|\[|$))/g, "$1’")
-      .replace(/(\w|\s)-{3}(\w|\s)/g, "$1—$2")
-      .replace(/(\w|\s)-{2}(\w|\s)/g, "$1–$2")
-      .replace(/([^\\\.…])\.{3}([^\.…])/g, "$1…$2");
+      .replace(new RegExp('(\\s|^|\\(|\\>|\\])(")(?=[^>\\]]*(<|\\[|$))', 'g'), "$1“")
+      .replace(new RegExp("(\\s|^|\\(|\\>|\\])(')(?=[^>\\]]*(<|\\[|$))", 'g'), "$1‘")
+      .replace(new RegExp('([^0-9])(")(?=[^>\\]]*(<|\\[|$))', 'g'), "$1”")
+      .replace(new RegExp("([^0-9])(')(?=[^>\\]]*(<|\\[|$))", 'g'), "$1’")
+      .replace(new RegExp('(\\w|\\s)-{3}(\\w|\\s)', 'g'), "$1—$2")
+      .replace(new RegExp('(\\w|\\s)-{2}(\\w|\\s)', 'g'), "$1–$2")
+      .replace(new RegExp('([^\\\\\\.…])\\.{3}([^\\.…])', 'g'), "$1…$2");
   };
 
   var getValue = function (activeElement) {
