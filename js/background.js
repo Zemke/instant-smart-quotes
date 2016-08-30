@@ -3,10 +3,65 @@ var BADGE = {
   OFF: {TEXT: 'OFF', COLOR: '#6B0031'}
 };
 var STORAGE_KEY = "InstantSmartQuotesDisabledPages";
+var LANGUAGES = [
+  {
+    label: "Deutsch",
+    code: "DE",
+    replacePrimary: ["\"", "\""],
+    replaceSecondary: ["'", "'"],
+    primary: ["„", "“"],
+    secondary: ["‚", "‘"]
+  },
+  {
+    label: "English",
+    code: "EN",
+    replacePrimary: ["\"", "\""],
+    replaceSecondary: ["'", "'"],
+    primary: ["“", "”"],
+    secondary: ["‘", "’"]
+  },
+  {
+    label: "Français",
+    code: "FR",
+    replacePrimary: ["<<", ">>"],
+    replaceSecondary: ["\"", "\""],
+    primary: ["«", "»"],
+    secondary: ["“", "”"]
+  },
+  {
+    label:  "Polskie",
+    code: "PL",
+    replacePrimary: ["\"", "\""],
+    replaceSecondary: ["<<", ">>"],
+    primary: ["„", "”"],
+    secondary: ["«", "»"]
+  }
+];
 var currentBadge;
 var disabledPages;
 
-chrome.browserAction.onClicked.addListener(function (tab) {
+chrome.browserAction.onClicked.addListener(toggle);
+
+chrome.runtime.onMessage.addListener(function (req, sender, cb) {
+  chrome.storage.sync.get(STORAGE_KEY, function (storage) {
+    var disabledPagesFromStorage = storage[STORAGE_KEY];
+
+    if (!disabledPagesFromStorage) {
+      cb({isEnabled: true});
+      disabledPages = [];
+      setBadge(BADGE.ON, sender.tab.id);
+    } else {
+      var isEnabled = disabledPagesFromStorage.indexOf(req.location) === -1;
+      cb({isEnabled: isEnabled});
+      disabledPages = disabledPagesFromStorage;
+      setBadge(isEnabled ? BADGE.ON : BADGE.OFF, sender.tab.id);
+    }
+  });
+
+  return true; // Important to indicate an asynchronous response.
+});
+
+function toggle(tab) {
   setBadge(currentBadge === BADGE.ON ? BADGE.OFF : BADGE.ON, tab.id);
   chrome.tabs.sendMessage(tab.id, {isEnabled: (currentBadge === BADGE.ON)}, function (res) {
     if (!res) {
@@ -27,26 +82,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     newStorageDict[STORAGE_KEY] = disabledPages;
     chrome.storage.sync.set(newStorageDict);
   });
-});
-
-chrome.runtime.onMessage.addListener(function (req, sender, cb) {
-  chrome.storage.sync.get(STORAGE_KEY, function (storage) {
-    var disabledPagesFromStorage = storage[STORAGE_KEY];
-
-    if (!disabledPagesFromStorage) {
-      cb({isEnabled: true});
-      disabledPages = [];
-      setBadge(BADGE.ON, sender.tab.id);
-    } else {
-      var isEnabled = disabledPagesFromStorage.indexOf(req.location) === -1;
-      cb({isEnabled: isEnabled});
-      disabledPages = disabledPagesFromStorage;
-      setBadge(isEnabled ? BADGE.ON : BADGE.OFF, sender.tab.id);
-    }
-  });
-
-  return true; // Important to indicate an asynchronous response.
-});
+}
 
 function setBadge(newBadge, tabId) {
   currentBadge = newBadge;

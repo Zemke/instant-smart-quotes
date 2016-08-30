@@ -1,0 +1,36 @@
+#otherStatus {
+    padding: 1px 3px;
+    color: white;
+    border-radius: 2px;
+}
+
+#switch:hover {
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px -10px 10px;
+}
+
+li {
+    padding: 3px 10px;
+}
+
+li:hover {
+    cursor: pointer;
+    background-color: #eeeeee;
+}
+
+li.selected, li.selected:hover {
+    background-color: transparent;
+    cursor: default;
+    font-weight: bold;
+}
+
+hr {
+    margin: 10px -20px 10px;
+    border: 0;
+    border-top: 1px solid #c9c7c7;
+}

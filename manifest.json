@@ -11,7 +11,8 @@
     "128": "icons/icon-128.png"
   },
   "browser_action": {
-    "default_title": "Instant Smart Quotes"
+    "default_title": "Instant Smart Quotes",
+    "default_popup": "popup.html"
   },
   "background": {
     "scripts": [
