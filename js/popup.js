@@ -15,7 +15,7 @@ function init(tabs) {
   }
 
   document.getElementById('switch').addEventListener('click', function (e) {
-    bg.toggle(currentTab);
+    bg.toggle(currentTab); // TODO Async?
     setSwitchBtn(currentSwitchBtn === bg.BADGE.ON ? bg.BADGE.ON.TEXT : bg.BADGE.OFF.TEXT);
     window.close();
   });
@@ -47,3 +47,5 @@ function switchLangTo(lang) {
 function dd(variable) {
   document.getElementById('dd').innerHTML = JSON.stringify(variable, null, 2);
 }
+
+dd(ng.uiLang);

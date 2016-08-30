@@ -8,7 +8,8 @@
  * Wrap in backticks `"Thou shalt not use dumb quotes."` to ignore.
  */
 
-var isEnabled;
+var enabled;
+var lang;
 
 document.addEventListener('input', function () {
 
@@ -63,10 +64,11 @@ document.addEventListener('input', function () {
 
   var regex = function (g) {
     return g
-      .replace(new RegExp('(\\s|^|\\(|\\>|\\])(")(?=[^>\\]]*(<|\\[|$))', 'g'), "$1“")
-      .replace(new RegExp("(\\s|^|\\(|\\>|\\])(')(?=[^>\\]]*(<|\\[|$))", 'g'), "$1‘")
-      .replace(new RegExp('([^0-9])(")(?=[^>\\]]*(<|\\[|$))', 'g'), "$1”")
-      .replace(new RegExp("([^0-9])(')(?=[^>\\]]*(<|\\[|$))", 'g'), "$1’")
+      .replace(new RegExp("([A-Za-z0-9])'", 'g'), "$1’")
+      .replace(new RegExp('(\\s|^|\\(|\\>|\\])(' + lang.replacePrimary[0] + ')(?=[^>\\]]*(<|\\[|$))', 'g'), "$1" + lang.primary[0])
+      .replace(new RegExp("(\\s|^|\\(|\\>|\\])(" + lang.replaceSecondary[0] + ")(?=[^>\\]]*(<|\\[|$))", 'g'), "$1" + lang.secondary[0])
+      .replace(new RegExp('([^0-9])(' + lang.replacePrimary[1] + ')(?=[^>\\]]*(<|\\[|$))', 'g'), "$1" + lang.primary[1])
+      .replace(new RegExp("([^0-9])(" + lang.replaceSecondary[1] + ")(?=[^>\\]]*(<|\\[|$))", 'g'), "$1" + lang.secondary[1])
       .replace(new RegExp('(\\w|\\s)-{3}(\\w|\\s)', 'g'), "$1—$2")
       .replace(new RegExp('(\\w|\\s)-{2}(\\w|\\s)', 'g'), "$1–$2")
       .replace(new RegExp('([^\\\\\\.…])\\.{3}([^\\.…])', 'g'), "$1…$2");
@@ -128,7 +130,7 @@ document.addEventListener('input', function () {
 
   var main = function () {
     var activeElement = document.activeElement;
-    if (isEnabled && isTextField(activeElement)) {
+    if (enabled && isTextField(activeElement)) {
       return processTextField(activeElement);
     }
     return false;
@@ -148,10 +150,11 @@ var getLocation = function () {
 };
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
-  isEnabled = req.isEnabled;
+  enabled = req.enabled;
   cb({location: getLocation()});
 });
 
-chrome.runtime.sendMessage({question: 'isEnabled', location: getLocation()}, function(res) {
-  isEnabled = res.isEnabled;
+chrome.runtime.sendMessage({question: 'enabled', location: getLocation()}, function(res) {
+  enabled = res.enabled;
+  lang = res.lang;
 });
