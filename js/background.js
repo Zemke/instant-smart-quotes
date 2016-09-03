@@ -41,9 +41,6 @@ var currentBadge;
 var pageSettings;
 var fallbackLang = setDefaultLang();
 
-// TODO This is now toggled by a click event within the popup.
-// chrome.browserAction.onClicked.addListener(toggle);
-
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   chrome.storage.sync.get(STORAGE_KEY, function (storage) {
     var pageSettingsFromStorage = storage[STORAGE_KEY];
