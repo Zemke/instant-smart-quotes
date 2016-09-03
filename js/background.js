@@ -53,6 +53,10 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
       pageSettings = [];
       setBadge(BADGE.ON, sender.tab.id);
     } else {
+      pageSettingsFromStorage.filter(function (pageSetting) {
+        return pageSetting.lang = populateLangByCode(pageSetting.lang);
+      });
+
       pageSettings = pageSettingsFromStorage;
       var pageSetting = getPageFromSettings(req.location);
       cb(pageSetting);
@@ -79,9 +83,7 @@ function toggle(tab) {
       updatePageFromSettings(res.location, {enabled: false});
     }
 
-    var newStorageDict = {};
-    newStorageDict[STORAGE_KEY] = pageSettings;
-    chrome.storage.sync.set(newStorageDict);
+    storePageSettings();
   });
 }
 
@@ -98,7 +100,7 @@ function getPageFromSettings(location) {
     var pageSetting = pageSettings[i];
 
     if (pageSetting.location === location) {
-      pageSetting.lang = populateLangByCode(pageSetting.lang);
+      pageSetting.lang = populateLangByCode(pageSetting.lang.code);
       return pageSetting;
     }
   }
@@ -107,11 +109,29 @@ function getPageFromSettings(location) {
 }
 
 function updatePageFromSettings(location, newKeyValue) {
-  var indexOfSetting = pageSettings.indexOf(getPageFromSettings(location));
+  var pageFromSettings = getPageFromSettings(location);
+  var indexOfSetting = pageSettings.indexOf(pageFromSettings);
 
-  pageSettings[indexOfSetting].enabled = newKeyValue.enabled || pageSettings[indexOfSetting].enabled;
-  pageSettings[indexOfSetting].lang = newKeyValue.lang || pageSettings[indexOfSetting].lang;
+  var newSetting = {
+    location: location,
+    enabled: isUndefined(newKeyValue.enabled) ? pageFromSettings.enabled : newKeyValue.enabled,
+    lang: isUndefined(newKeyValue.lang) ? pageFromSettings.lang : newKeyValue.lang
+  };
 
+  if (isDefaultSetting(newSetting)) {
+    if (indexOfSetting !== -1) {
+      // Default settings should not be stored.
+      pageFromSettings.splice(indexOfSetting, 1);
+    }
+
+    return newSetting;
+  }
+
+  if (indexOfSetting === -1) {
+    pageSettings.push(newSetting);
+  } else {
+    pageSettings[indexOfSetting] = newSetting;
+  }
   return pageSettings;
 }
 
@@ -134,11 +154,31 @@ function setDefaultLang() {
   var i = 0;
   for (; i < LANGUAGES.length; i++) {
     if (browserUiLang.substr(0, 2).toLowerCase() === LANGUAGES[i].code.toLowerCase()) {
-      return LANGUAGES[i]; // TODO Or the whole object?
+      return LANGUAGES[i];
     }
 
   }
-  return populateLangByCode('en'); // TODO Or the whole object?
+  return populateLangByCode('en');
+}
+
+function isDefaultSetting(setting) {
+  try {
+    return setting.enabled === true && setting.code.toLowerCase() === fallbackLang.code.toLowerCase();
+  } catch (e) {
+    return false;
+  }
+}
+
+function storePageSettings() {
+  var pageSettingsToStore = new Array(pageSettings)[0]; // Deep copy.
+
+  pageSettingsToStore.map(function (pageSettingToStore) {
+    pageSettingToStore.lang = pageSettingToStore.lang.code;
+  });
+
+  var newStorageDict = {};
+  newStorageDict[STORAGE_KEY] = pageSettingsToStore;
+  chrome.storage.sync.set(newStorageDict);
 }
 
 function isUndefined(variable) {
