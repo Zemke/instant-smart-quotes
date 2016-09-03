@@ -1,42 +1,1027 @@
+//<editor-fold desc="Description">
+var LANGUAGES = [
+  {
+    "label": "Afrikaans",
+    "code": "Afr",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Albanian",
+    "code": "AL",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Arabic",
+    "code": "Ara",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "«",
+      "»"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "<<",
+      ">>"
+    ]
+  },
+  {
+    "label": "Armenian",
+    "code": "AM",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Belarusian",
+    "code": "BY",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Bosnian",
+    "code": "BA",
+    "primary": [
+      "”",
+      "”"
+    ],
+    "secondary": [
+      "’",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Bulgarian",
+    "code": "BG",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "’",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Catalan",
+    "code": "Cata",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Chinese",
+    "code": "CL",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Croatian",
+    "code": "HR",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Czech",
+    "code": "CZ",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‚",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Danish",
+    "code": "DK",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "'",
+      "'"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "’",
+      "’"
+    ]
+  },
+  {
+    "label": "Dutch",
+    "code": "NL",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "‚",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "English",
+    "code": "EN",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Esperanto",
+    "code": "Esp",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Estonian",
+    "code": "EE",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      ""
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      null,
+      null
+    ]
+  },
+  {
+    "label": "Filipino",
+    "code": "Fil",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Finnish",
+    "code": "FI",
+    "primary": [
+      "”",
+      "”"
+    ],
+    "secondary": [
+      "’",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "French",
+    "code": "GF",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "«",
+      "»"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "<<",
+      ">>"
+    ]
+  },
+  {
+    "label": "Georgian",
+    "code": "GE",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      ""
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      null,
+      null
+    ]
+  },
+  {
+    "label": "German",
+    "code": "DE",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‚",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Greek",
+    "code": "GR",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Hebrew",
+    "code": "Heb",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "‚",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Hungarian",
+    "code": "HU",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "»",
+      "«"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      ">>",
+      "<<"
+    ]
+  },
+  {
+    "label": "Icelandic",
+    "code": "IS",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‚",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Indonesian",
+    "code": "IN",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Interlingua",
+    "code": "Int",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Irish",
+    "code": "Ire",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Italian",
+    "code": "IT",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Korean",
+    "code": "KR",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Latvian",
+    "code": "LV",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "„",
+      "“"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Lithuanian",
+    "code": "LT",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      ""
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      null,
+      null
+    ]
+  },
+  {
+    "label": "Macedonian",
+    "code": "MO",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "’",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Norwegian",
+    "code": "NF",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "’",
+      "’"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Persian",
+    "code": "PE",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      ""
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      null,
+      null
+    ]
+  },
+  {
+    "label": "Polish",
+    "code": "PL",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "«",
+      "»"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "<<",
+      ">>"
+    ]
+  },
+  {
+    "label": "Brazilian",
+    "code": "BR",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Portuguese",
+    "code": "PT",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Romanian",
+    "code": "RO",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "«",
+      "»"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "<<",
+      ">>"
+    ]
+  },
+  {
+    "label": "Russian",
+    "code": "RU",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "„",
+      "“"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Serbian",
+    "code": "RS",
+    "primary": [
+      "„",
+      "”"
+    ],
+    "secondary": [
+      "’",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Slovak",
+    "code": "SK",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‚",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Slovene",
+    "code": "SK",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‚",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Sorbian",
+    "code": "Sor",
+    "primary": [
+      "„",
+      "“"
+    ],
+    "secondary": [
+      "‚",
+      "‘"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Spanish",
+    "code": "ES",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Swedish",
+    "code": "SE",
+    "primary": [
+      "”",
+      "”"
+    ],
+    "secondary": [
+      "’",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Thai",
+    "code": "TH",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Turkish",
+    "code": "TR",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      "‘",
+      "’"
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      "'",
+      "'"
+    ]
+  },
+  {
+    "label": "Ukrainian",
+    "code": "UA",
+    "primary": [
+      "«",
+      "»"
+    ],
+    "secondary": [
+      "„",
+      "“"
+    ],
+    "replacePrimary": [
+      "<<",
+      ">>"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  },
+  {
+    "label": "Vietnamese",
+    "code": "VN",
+    "primary": [
+      "“",
+      "”"
+    ],
+    "secondary": [
+      ""
+    ],
+    "replacePrimary": [
+      "\"",
+      "\""
+    ],
+    "replaceSecondary": [
+      null,
+      null
+    ]
+  },
+  {
+    "label": "Welsh",
+    "code": "Wal",
+    "primary": [
+      "‘",
+      "’"
+    ],
+    "secondary": [
+      "“",
+      "”"
+    ],
+    "replacePrimary": [
+      "'",
+      "'"
+    ],
+    "replaceSecondary": [
+      "\"",
+      "\""
+    ]
+  }
+];
+//</editor-fold>
 var BADGE = {
   ON:  {TEXT: 'ON',  COLOR: '#00A850'},
   OFF: {TEXT: 'OFF', COLOR: '#6B0031'}
 };
 var STORAGE_KEY = "InstantSmartQuotes";
-var LANGUAGES = [
-  {
-    label: "Deutsch",
-    code: "DE",
-    replacePrimary: ["\"", "\""],
-    replaceSecondary: ["'", "'"],
-    primary: ["„", "“"],
-    secondary: ["‚", "‘"]
-  },
-  {
-    label: "English",
-    code: "EN",
-    replacePrimary: ["\"", "\""],
-    replaceSecondary: ["'", "'"],
-    primary: ["“", "”"],
-    secondary: ["‘", "’"]
-  },
-  {
-    label: "Français",
-    code: "FR",
-    replacePrimary: ["<<", ">>"],
-    replaceSecondary: ["\"", "\""],
-    primary: ["«", "»"],
-    secondary: ["“", "”"]
-  },
-  {
-    label:  "Polskie",
-    code: "PL",
-    replacePrimary: ["\"", "\""],
-    replaceSecondary: ["<<", ">>"],
-    primary: ["„", "”"],
-    secondary: ["«", "»"]
-  }
-];
 var currentBadge;
 var pageSettings;
 var currentPageSetting;
