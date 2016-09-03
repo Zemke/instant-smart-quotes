@@ -169,7 +169,9 @@ function setDefaultLang() {
 
 function isDefaultSetting(setting) {
   try {
-    return setting.enabled === true && setting.code.toLowerCase() === fallbackLang.code.toLowerCase();
+    return (
+      setting.enabled === true
+      && setting.code.toLowerCase() === fallbackLang.code.toLowerCase());
   } catch (e) {
     return false;
   }
