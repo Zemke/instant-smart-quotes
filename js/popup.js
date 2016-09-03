@@ -15,7 +15,7 @@ function init(tabs) {
   }
 
   document.getElementById('switch').addEventListener('click', function (e) {
-    var currentBadge = bg.toggle(currentTab); // TODO Async?
+    var currentBadge = bg.toggle(currentTab);
     dd(currentBadge.TEXT);
     setSwitchBtn(currentBadge.TEXT);
     window.close();
