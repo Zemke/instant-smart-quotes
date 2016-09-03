@@ -1080,7 +1080,7 @@ function switchLangTo(lang, tab) {
 
 function setBadge(newBadge, tabId) {
   currentBadge = newBadge;
-  var badgeText = currentBadge === BADGE.ON ? currentPageSetting.lang.code.substr(0, 2).toUpperCase() : BADGE.OFF.TEXT;
+  var badgeText = currentBadge === BADGE.ON ? formatLangCode(currentPageSetting.lang.code) : BADGE.OFF.TEXT;
 
   chrome.browserAction.setBadgeText({text: badgeText, tabId: tabId});
   chrome.browserAction.setBadgeBackgroundColor({color: currentBadge.COLOR, tabId: tabId});
@@ -1172,6 +1172,13 @@ function storePageSettings() {
   var newStorageDict = {};
   newStorageDict[STORAGE_KEY] = pageSettingsToStore;
   chrome.storage.sync.set(newStorageDict);
+}
+
+function formatLangCode(langCode) {
+  if (langCode.length === 3) { // Custom languages without an associated country.
+    return langCode[0].toUpperCase() + langCode.substr(1, 3).toLowerCase();
+  }
+  return langCode.substr(0, 2).toUpperCase();
 }
 
 function isUndefined(variable) {
