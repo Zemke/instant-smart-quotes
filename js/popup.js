@@ -34,15 +34,11 @@ function init(tabs) {
     })(i);
     langList.appendChild(li);
   }
-}
 
-function switchLangTo(lang) {
-
-  // TODO Default lang should be the browser's lang
-  // TODO Initialize lang the first time the user accesses a page
-
-  bg.switchLangTo(lang);
-  window.close();
+  function switchLangTo(lang) {
+    bg.switchLangTo(lang, currentTab);
+    window.close();
+  }
 }
 
 function dd(variable) {

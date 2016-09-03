@@ -66,26 +66,31 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   return true; // Important to indicate an asynchronous response.
 });
 
-function toggle(tab) {
-  setBadge(currentBadge === BADGE.ON ? BADGE.OFF : BADGE.ON, tab.id);
+function toggle(tab, toggleLang) {
+  if (toggleLang === true) {
+    setBadge(BADGE.ON, tab.id);
+  } else {
+    setBadge(currentBadge === BADGE.ON ? BADGE.OFF : BADGE.ON, tab.id);
+  }
 
-  chrome.tabs.sendMessage(tab.id, {enabled: (currentBadge === BADGE.ON)}, function (res) {
+  chrome.tabs.sendMessage(tab.id, {enabled: (currentBadge === BADGE.ON), lang: currentPageSetting.lang}, function (res) {
     if (!res) {
       // When the extension had just been installed and the page has not yet been refreshed,
       // the content script will not yet have loaded and the page would therefor need a refresh.
       return;
     }
 
-    if (currentBadge === BADGE.ON) {
-      currentPageSetting = updatePageFromSettings(res.location, {enabled: true});
-    } else if (currentBadge === BADGE.OFF) {
-      currentPageSetting = updatePageFromSettings(res.location, {enabled: false});
-    }
-
+    currentPageSetting = updatePageFromSettings(res.location, {enabled: true, lang: currentPageSetting.lang});
     storePageSettings();
   });
 
   return currentBadge;
+}
+
+function switchLangTo(lang, tab) {
+  currentPageSetting.lang = lang;
+  currentPageSetting.enabled = true;
+  toggle(tab, true);
 }
 
 function setBadge(newBadge, tabId) {

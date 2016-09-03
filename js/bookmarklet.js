@@ -151,6 +151,7 @@ var getLocation = function () {
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   enabled = req.enabled;
+  lang = req.lang;
   cb({location: getLocation()});
 });
 
