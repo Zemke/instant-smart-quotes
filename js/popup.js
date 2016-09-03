@@ -8,15 +8,16 @@ function init(tabs) {
   chrome.browserAction.getBadgeText({tabId: currentTab.id}, setSwitchBtn);
 
   function setSwitchBtn(badgeText) {
-    currentSwitchBtn = badgeText === bg.BADGE.ON.TEXT ? bg.BADGE.OFF : bg.BADGE.ON;
+    currentSwitchBtn = badgeText !== bg.BADGE.OFF.TEXT ? bg.BADGE.OFF : bg.BADGE.ON;
     var otherStatusEl = document.getElementById('otherStatus');
     otherStatusEl.innerHTML = currentSwitchBtn.TEXT;
     otherStatusEl.style.backgroundColor = currentSwitchBtn.COLOR;
   }
 
   document.getElementById('switch').addEventListener('click', function (e) {
-    bg.toggle(currentTab); // TODO Async?
-    setSwitchBtn(currentSwitchBtn === bg.BADGE.ON ? bg.BADGE.ON.TEXT : bg.BADGE.OFF.TEXT);
+    var currentBadge = bg.toggle(currentTab); // TODO Async?
+    dd(currentBadge.TEXT);
+    setSwitchBtn(currentBadge.TEXT);
     window.close();
   });
 
@@ -47,5 +48,3 @@ function switchLangTo(lang) {
 function dd(variable) {
   document.getElementById('dd').innerHTML = JSON.stringify(variable, null, 2);
 }
-
-dd(ng.uiLang);

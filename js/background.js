@@ -39,6 +39,7 @@ var LANGUAGES = [
 ];
 var currentBadge;
 var pageSettings;
+var currentPageSetting;
 var fallbackLang = setDefaultLang();
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
@@ -48,6 +49,7 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
     if (!pageSettingsFromStorage) {
       cb({location: location, lang: fallbackLang, enabled: true});
       pageSettings = [];
+      currentPageSetting = {enabled: true, location: req.location, lang: fallbackLang};
       setBadge(BADGE.ON, sender.tab.id);
     } else {
       pageSettingsFromStorage.filter(function (pageSetting) {
@@ -55,9 +57,9 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
       });
 
       pageSettings = pageSettingsFromStorage;
-      var pageSetting = getPageFromSettings(req.location);
-      cb(pageSetting);
-      setBadge(pageSetting.enabled ? BADGE.ON : BADGE.OFF, sender.tab.id);
+      currentPageSetting = getPageFromSettings(req.location);
+      cb(currentPageSetting);
+      setBadge(currentPageSetting.enabled ? BADGE.ON : BADGE.OFF, sender.tab.id);
     }
   });
 
@@ -75,19 +77,22 @@ function toggle(tab) {
     }
 
     if (currentBadge === BADGE.ON) {
-      updatePageFromSettings(res.location, {enabled: true});
+      currentPageSetting = updatePageFromSettings(res.location, {enabled: true});
     } else if (currentBadge === BADGE.OFF) {
-      updatePageFromSettings(res.location, {enabled: false});
+      currentPageSetting = updatePageFromSettings(res.location, {enabled: false});
     }
 
     storePageSettings();
   });
+
+  return currentBadge;
 }
 
 function setBadge(newBadge, tabId) {
   currentBadge = newBadge;
+  var badgeText = currentBadge === BADGE.ON ? currentPageSetting.lang.code.substr(0, 2).toUpperCase() : BADGE.OFF.TEXT;
 
-  chrome.browserAction.setBadgeText({text: currentBadge.TEXT, tabId: tabId});
+  chrome.browserAction.setBadgeText({text: badgeText, tabId: tabId});
   chrome.browserAction.setBadgeBackgroundColor({color: currentBadge.COLOR, tabId: tabId});
 }
 
@@ -120,16 +125,15 @@ function updatePageFromSettings(location, newKeyValue) {
       // Default settings should not be stored.
       pageFromSettings.splice(indexOfSetting, 1);
     }
-
-    return newSetting;
-  }
-
-  if (indexOfSetting === -1) {
-    pageSettings.push(newSetting);
   } else {
-    pageSettings[indexOfSetting] = newSetting;
+    if (indexOfSetting === -1) {
+      pageSettings.push(newSetting);
+    } else {
+      pageSettings[indexOfSetting] = newSetting;
+    }
   }
-  return pageSettings;
+
+  return newSetting;
 }
 
 function populateLangByCode(langCode) {
@@ -167,7 +171,7 @@ function isDefaultSetting(setting) {
 }
 
 function storePageSettings() {
-  var pageSettingsToStore = new Array(pageSettings)[0]; // Deep copy.
+  var pageSettingsToStore = JSON.parse(JSON.stringify(pageSettings)); // Deep copy.
 
   pageSettingsToStore.map(function (pageSettingToStore) {
     pageSettingToStore.lang = pageSettingToStore.lang.code;
