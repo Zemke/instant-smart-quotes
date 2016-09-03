@@ -1065,7 +1065,8 @@ function toggle(tab, toggleLang) {
       return;
     }
 
-    currentPageSetting = updatePageFromSettings(res.location, {enabled: true, lang: currentPageSetting.lang});
+    currentPageSetting = updatePageFromSettings(res.location,
+        {enabled: currentBadge === BADGE.ON, lang: currentPageSetting.lang});
     storePageSettings();
   });
 
