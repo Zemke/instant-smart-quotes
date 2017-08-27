@@ -1,11 +1,12 @@
 /*
- * Instant Smart Quotes by Florian Zemke, Regex by Muthu Kannan
+ * Instant Smart Quotes by Florian Zemke, Regex by Muthu Kannan and Geoffrey Booth
  * https://github.com/Zemke/instant-smart-quotes
  *
  * Replace typewriter quotes, apostrophes, ellipses and dashes
  * with their typographically correct counterparts as you type.
  *
  * Wrap in backticks `"Thou shalt not use dumb quotes."` to ignore.
+ * Also ignores triple-backtick ``` "code blocks" ```.
  */
 
 var enabled;
@@ -38,7 +39,7 @@ document.addEventListener('input', function () {
   };
 
   var replaceTypewriterPunctuation = function (g) {
-    var splitterRegex = /`[\S\s]*?`/g;
+    var splitterRegex = /(?:```[\S\s]*?(?:```|$))|(?:`[\S\s]*?(?:`|$))/g;
     var f = false,
       d = "",
       h = g.split(splitterRegex);
