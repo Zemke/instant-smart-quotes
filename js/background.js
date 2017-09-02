@@ -1061,7 +1061,7 @@ function toggle(tab, toggleLang) {
   chrome.tabs.sendMessage(tab.id, {enabled: (currentBadge === BADGE.ON), lang: currentPageSetting.lang}, function (res) {
     if (!res) {
       // When the extension had just been installed and the page has not yet been refreshed,
-      // the content script will not yet have loaded and the page would therefor need a refresh.
+      // the content script will not yet have loaded and the page would therefore need a refresh.
       return;
     }
 
