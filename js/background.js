@@ -1034,7 +1034,7 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
     if (!pageSettingsFromStorage) {
       cb({location: location, lang: fallbackLang, enabled: true});
       pageSettings = [];
-      currentPageSetting = {enabled: true, location: req.location, lang: fallbackLang};
+      currentPageSetting = {enabled: true, location: sender.tab.url, lang: fallbackLang};
       setBadge(BADGE.ON, sender.tab.id);
     } else {
       pageSettingsFromStorage.filter(function (pageSetting) {
@@ -1042,7 +1042,7 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
       });
 
       pageSettings = pageSettingsFromStorage;
-      currentPageSetting = getPageFromSettings(req.location);
+      currentPageSetting = getPageFromSettings(sender.tab.url);
       cb(currentPageSetting);
       setBadge(currentPageSetting.enabled ? BADGE.ON : BADGE.OFF, sender.tab.id);
     }
@@ -1058,14 +1058,14 @@ function toggle(tab, toggleLang) {
     setBadge(currentBadge === BADGE.ON ? BADGE.OFF : BADGE.ON, tab.id);
   }
 
-  chrome.tabs.sendMessage(tab.id, {enabled: (currentBadge === BADGE.ON), lang: currentPageSetting.lang}, function (res) {
+  chrome.tabs.sendMessage(tab.id, {enabled: (currentBadge === BADGE.ON), lang: currentPageSetting.lang, location: tab.url}, function (res) {
     if (!res) {
       // When the extension had just been installed and the page has not yet been refreshed,
       // the content script will not yet have loaded and the page would therefore need a refresh.
       return;
     }
 
-    currentPageSetting = updatePageFromSettings(res.location,
+    currentPageSetting = updatePageFromSettings(tab.url,
         {enabled: currentBadge === BADGE.ON, lang: currentPageSetting.lang});
     storePageSettings();
   });
@@ -1092,7 +1092,7 @@ function getPageFromSettings(location) {
   for (; i < pageSettings.length; i++) {
     var pageSetting = pageSettings[i];
 
-    if (pageSetting.location === location) {
+    if (new URL(pageSetting.location).host === new URL(location).host) {
       pageSetting.lang = populateLangByCode(pageSetting.lang.code);
       return pageSetting;
     }

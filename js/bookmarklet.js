@@ -138,25 +138,13 @@ document.addEventListener('input', function () {
   }; main();
 });
 
-var getLocation = function () {
-  var pathnameWithoutTrailingSlash;
-
-  if (location.pathname[location.pathname.length - 1] === '/') {
-    pathnameWithoutTrailingSlash = location.pathname.substr(0, location.pathname.length - 1);
-  } else {
-    pathnameWithoutTrailingSlash = location.pathname;
-  }
-
-  return location.host + pathnameWithoutTrailingSlash;
-};
-
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   enabled = req.enabled;
   lang = req.lang;
-  cb({location: getLocation()});
+  cb({location: req.location});
 });
 
-chrome.runtime.sendMessage({question: 'enabled', location: getLocation()}, function(res) {
+chrome.runtime.sendMessage({question: 'enabled'}, function(res) {
   enabled = res.enabled;
   lang = res.lang;
 });
