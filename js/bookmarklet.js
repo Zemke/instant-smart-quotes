@@ -71,6 +71,7 @@ document.addEventListener('input', function () {
       .replace(new RegExp("([^0-9])(" + lang.replaceSecondary[1] + ")(?=[^>\\]]*(<|\\[|$))", 'g'), "$1" + lang.secondary[1])
       .replace(new RegExp('(\\w|\\s)-{3}(\\w|\\s)', 'g'), "$1—$2")
       .replace(new RegExp('(\\w|\\s)-{2}(\\w|\\s)', 'g'), "$1–$2")
+      .replace(new RegExp('(\\w|\\s)–-(\\w|\\s)', 'g'), "$1—$2")
       .replace(new RegExp('([^\\\\\\.…])\\.{3}([^\\.…])', 'g'), "$1…$2");
   };
 
