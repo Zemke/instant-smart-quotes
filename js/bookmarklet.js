@@ -12,59 +12,57 @@
 var enabled;
 var lang;
 
-document.addEventListener('input', function () {
+var isTextField = function (elem) {
+  return !!(elem.tagName.toUpperCase() == 'TEXTAREA'
+      || elem.isContentEditable
+      || (elem.tagName.toUpperCase() == 'INPUT'
+          && elem.type.toUpperCase() == 'TEXT'));
+};
 
-  var isTextField = function (activeElement) {
-    return !!(activeElement.tagName.toUpperCase() == 'TEXTAREA'
-           || activeElement.isContentEditable
-           || (activeElement.tagName.toUpperCase() == 'INPUT'
-           && activeElement.type.toUpperCase() == 'TEXT'));
-  };
+var charsTillEndOfStr = function (activeElement) {
+  return getValue(activeElement).length - getSelectionStart(activeElement);
+};
 
-  var charsTillEndOfStr = function (activeElement) {
-    return getValue(activeElement).length - getSelectionStart(activeElement);
-  };
+var correctCaretPosition = function (activeElement, charsTillEndOfStr) {
+  var correctCaretPos = getValue(activeElement).length - charsTillEndOfStr;
+  setSelection(activeElement, correctCaretPos);
+  return correctCaretPos;
+};
 
-  var correctCaretPosition = function (activeElement, charsTillEndOfStr) {
-    var correctCaretPos = getValue(activeElement).length - charsTillEndOfStr;
-    setSelection(activeElement, correctCaretPos);
-    return correctCaretPos;
-  };
+var processTextField = function (activeElement) {
+  var charsTillEnfOfStrBeforeRegex = charsTillEndOfStr(activeElement);
+  setValue(activeElement, replaceTypewriterPunctuation(getValue(activeElement)));
+  correctCaretPosition(activeElement, charsTillEnfOfStrBeforeRegex);
+  return getValue(activeElement);
+};
 
-  var processTextField = function (activeElement) {
-    var charsTillEnfOfStrBeforeRegex = charsTillEndOfStr(activeElement);
-    setValue(activeElement, replaceTypewriterPunctuation(getValue(activeElement)));
-    correctCaretPosition(activeElement, charsTillEnfOfStrBeforeRegex);
-    return getValue(activeElement);
-  };
-
-  var replaceTypewriterPunctuation = function (g) {
-    var splitterRegex = /(?:```[\S\s]*?(?:```|$))|(?:`[\S\s]*?(?:`|$))/g;
-    var f = false,
+var replaceTypewriterPunctuation = function (g) {
+  var splitterRegex = /(?:```[\S\s]*?(?:```|$))|(?:`[\S\s]*?(?:`|$))/g;
+  var f = false,
       d = "",
       h = g.split(splitterRegex);
-    if (h.length === 1) {
-      d = regex(g);
-    } else {
-      var a = g.match(splitterRegex);
-      if (!h[0]) {
-        h.shift();
-        f = true;
-      }
-      for (var b = 0; b < h.length; ++b) {
-        var c = regex(h[b]);
-        if (f) {
-          d += a[b] != null ? a[b] + c : c;
-        } else {
-          d += a[b] != null ? c + a[b] : c;
-        }
+  if (h.length === 1) {
+    d = regex(g);
+  } else {
+    var a = g.match(splitterRegex);
+    if (!h[0]) {
+      h.shift();
+      f = true;
+    }
+    for (var b = 0; b < h.length; ++b) {
+      var c = regex(h[b]);
+      if (f) {
+        d += a[b] != null ? a[b] + c : c;
+      } else {
+        d += a[b] != null ? c + a[b] : c;
       }
     }
-    return d;
-  };
+  }
+  return d;
+};
 
-  var regex = function (g) {
-    return g
+var regex = function (g) {
+  return g
       .replace(new RegExp('(\\s|^|\\(|\\>|\\])(' + lang.replacePrimary[0] + ')(?=[^>\\]]*(<|\\[|$))', 'g'), "$1" + lang.primary[0])
       .replace(new RegExp("(\\s|^|\\(|\\>|\\])(" + lang.replaceSecondary[0] + ")(?=[^>\\]]*(<|\\[|$))", 'g'), "$1" + lang.secondary[0])
       .replace(new RegExp('(.)(' + lang.replacePrimary[1] + ')(?=[^>\\]]*(<|\\[|$))', 'g'), "$1" + lang.primary[1])
@@ -80,69 +78,66 @@ document.addEventListener('input', function () {
       .replace(/‘(twas)/gi, "’$1")
       .replace(/‘(cause)/gi, "’$1")
       .replace(/‘(n)/gi, "’$1");
-  };
+};
 
-  var getValue = function (activeElement) {
-    if (activeElement.isContentEditable) {
-      return document.getSelection().anchorNode.textContent;
-    }
-    return activeElement.value;
-  };
+var getValue = function (activeElement) {
+  if (activeElement.isContentEditable) {
+    return document.getSelection().anchorNode.textContent;
+  }
+  return activeElement.value;
+};
 
-  var setValue = function (activeElement, newValue) {
-    if (activeElement.isContentEditable) {
-      var sel = document.getSelection();
+var setValue = function (activeElement, newValue) {
+  if (activeElement.isContentEditable) {
+    var sel = document.getSelection();
 
-      if (!isTextNode(sel.anchorNode)) {
-        return;
-      }
-
-      return sel.anchorNode.textContent = newValue;
-    }
-    return activeElement.value = newValue;
-  };
-
-  var getSelectionStart = function (activeElement) {
-    if (activeElement.isContentEditable) {
-      return document.getSelection().anchorOffset;
-    }
-    return activeElement.selectionStart;
-  };
-
-  var setSelection = function (activeElement, correctCaretPos) {
-    if (activeElement.isContentEditable) {
-      var range = document.createRange();
-      var sel = window.getSelection();
-
-      if (!isTextNode(sel.anchorNode)) {
-        var textNode = document.createTextNode("");
-        sel.anchorNode.insertBefore(textNode, sel.anchorNode.childNodes[0]);
-        range.setStart(textNode, 0);
-      } else {
-        range.setStart(sel.anchorNode, correctCaretPos);
-      }
-
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
+    if (!isTextNode(sel.anchorNode)) {
       return;
     }
 
-    activeElement.selectionStart = correctCaretPos;
-    activeElement.selectionEnd = correctCaretPos;
-  };
+    return sel.anchorNode.textContent = newValue;
+  }
+  return activeElement.value = newValue;
+};
 
-  var isTextNode = function (node) {
-    return node.nodeType === 3;
-  };
+var getSelectionStart = function (activeElement) {
+  if (activeElement.isContentEditable) {
+    return document.getSelection().anchorOffset;
+  }
+  return activeElement.selectionStart;
+};
 
-  var main = function () {
-    var activeElement = document.activeElement;
-    if (enabled && isTextField(activeElement)) {
-      return processTextField(activeElement);
+var setSelection = function (activeElement, correctCaretPos) {
+  if (activeElement.isContentEditable) {
+    var range = document.createRange();
+    var sel = window.getSelection();
+
+    if (!isTextNode(sel.anchorNode)) {
+      var textNode = document.createTextNode("");
+      sel.anchorNode.insertBefore(textNode, sel.anchorNode.childNodes[0]);
+      range.setStart(textNode, 0);
+    } else {
+      range.setStart(sel.anchorNode, correctCaretPos);
     }
-    return false;
-  }; main();
+
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    return;
+  }
+
+  activeElement.selectionStart = correctCaretPos;
+  activeElement.selectionEnd = correctCaretPos;
+};
+
+var isTextNode = function (node) {
+  return node.nodeType === 3;
+};
+
+document.addEventListener('input', function (e) {
+  if (enabled && isTextField(document.activeElement)) {
+    processTextField(document.activeElement);
+  }
 });
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
@@ -151,7 +146,7 @@ chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   cb({location: req.location});
 });
 
-chrome.runtime.sendMessage({question: 'enabled'}, function(res) {
+chrome.runtime.sendMessage({question: 'enabled'}, function (res) {
   enabled = res.enabled;
   lang = res.lang;
 });
