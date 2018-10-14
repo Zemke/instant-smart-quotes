@@ -13,10 +13,10 @@ var enabled;
 var lang;
 
 var isTextField = function (elem) {
-  return !!(elem.tagName.toUpperCase() == 'TEXTAREA'
+  return !!(elem.tagName.toUpperCase() === 'TEXTAREA'
       || elem.isContentEditable
-      || (elem.tagName.toUpperCase() == 'INPUT'
-          && elem.type.toUpperCase() == 'TEXT'));
+      || (elem.tagName.toUpperCase() === 'INPUT'
+          && elem.type.toUpperCase() === 'TEXT'));
 };
 
 var charsTillEndOfStr = function (activeElement) {
@@ -134,11 +134,14 @@ var isTextNode = function (node) {
   return node.nodeType === 3;
 };
 
-document.addEventListener('input', function (e) {
-  if (enabled && isTextField(document.activeElement)) {
-    processTextField(document.activeElement);
-  }
-});
+document
+    .querySelectorAll('[contenteditable], textarea, input')
+    .forEach(function (elem) {
+      elem.addEventListener('input', function (e) {
+        enabled && isTextField(document.activeElement) && processTextField(document.activeElement);
+      });
+    });
+
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   enabled = req.enabled;
