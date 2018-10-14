@@ -65,7 +65,6 @@ document.addEventListener('input', function () {
 
   var regex = function (g) {
     return g
-      .replace(new RegExp("([A-Za-z0-9])'", 'g'), "$1’")
       .replace(new RegExp('(\\s|^|\\(|\\>|\\])(' + lang.replacePrimary[0] + ')(?=[^>\\]]*(<|\\[|$))', 'g'), "$1" + lang.primary[0])
       .replace(new RegExp("(\\s|^|\\(|\\>|\\])(" + lang.replaceSecondary[0] + ")(?=[^>\\]]*(<|\\[|$))", 'g'), "$1" + lang.secondary[0])
       .replace(new RegExp('([^0-9])(' + lang.replacePrimary[1] + ')(?=[^>\\]]*(<|\\[|$))', 'g'), "$1" + lang.primary[1])
