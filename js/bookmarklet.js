@@ -72,7 +72,14 @@ document.addEventListener('input', function () {
       .replace(new RegExp('(\\w|\\s)-{3}(\\w|\\s)', 'g'), "$1—$2")
       .replace(new RegExp('(\\w|\\s)-{2}(\\w|\\s)', 'g'), "$1–$2")
       .replace(new RegExp('(\\w|\\s)–-(\\w|\\s)', 'g'), "$1—$2")
-      .replace(new RegExp('([^\\\\\\.…])\\.{3}([^\\.…])', 'g'), "$1…$2");
+      .replace(new RegExp('([^\\\\\\.…])\\.{3}([^\\.…])', 'g'), "$1…$2")
+
+      // shortenings whitelist
+      .replace(/‘([0-9]{2}s?)/gi, "’$1")
+      .replace(/‘(em)/gi, "’$1")
+      .replace(/‘(twas)/gi, "’$1")
+      .replace(/‘(cause)/gi, "’$1")
+      .replace(/‘(n)/gi, "’$1");
   };
 
   var getValue = function (activeElement) {
