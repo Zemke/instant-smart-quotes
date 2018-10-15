@@ -37,7 +37,7 @@ var processTextField = function (activeElement) {
 };
 
 var replaceTypewriterPunctuation = function (g) {
-  var splitterRegex = /(?:```[\S\s]*?(?:```|$))|(?:`[\S\s]*?(?:`|$))|(?:\{code\}[\S\s]*?(?:\{code\}|$))|(?:\{noformat\}[\S\s]*?(?:\{noformat\}|$))/gi;
+  var splitterRegex = /(?:```[\S\s]*?(?:```|$))|(?:`[\S\s]*?(?:`|$))|(?:\{code(?:\:.*?)?\}[\S\s]*?(?:\{code\}|$))|(?:\{noformat\}[\S\s]*?(?:\{noformat\}|$))/gi;
   var f = false,
       d = "",
       h = g.split(splitterRegex);
