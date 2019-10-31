@@ -134,14 +134,9 @@ var isTextNode = function (node) {
   return node.nodeType === 3;
 };
 
-document
-    .querySelectorAll('[contenteditable], textarea, input')
-    .forEach(function (elem) {
-      elem.addEventListener('input', function (e) {
-        enabled && isTextField(document.activeElement) && processTextField(document.activeElement);
-      });
-    });
-
+document.addEventListener('input', e => {
+  enabled && isTextField(e.target) && processTextField(e.target);
+});
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   enabled = req.enabled;
