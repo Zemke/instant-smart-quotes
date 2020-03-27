@@ -135,7 +135,7 @@ var isTextNode = function (node) {
 };
 
 document.addEventListener('input', e => {
-  enabled && isTextField(e.target) && processTextField(e.target);
+  enabled && e.data !== '¨' && isTextField(e.target) && processTextField(e.target);
 });
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
