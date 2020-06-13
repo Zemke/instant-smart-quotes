@@ -11,6 +11,11 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{6eee356b-4400-40d2-b4f9-b5e6ab5965e5}"
+    }
+  },
   "browser_action": {
     "default_title": "Instant Smart Quotes",
     "default_popup": "popup.html"
