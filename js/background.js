@@ -788,12 +788,12 @@ var LANGUAGES = [
       "“"
     ],
     "replacePrimary": [
-      "<<",
-      ">>"
-    ],
-    "replaceSecondary": [
       "\"",
       "\""
+    ],
+    "replaceSecondary": [
+      "\'",
+      "\'"
     ]
   },
   {
