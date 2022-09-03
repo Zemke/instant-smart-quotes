@@ -35,6 +35,7 @@ ul {
 #switch,
 li {
     padding: .1rem .2rem;
+    padding-right: 1rem;
     border-radius: .5rem;
 }
 
