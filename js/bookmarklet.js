@@ -136,7 +136,7 @@ var isTextNode = function (node) {
 
 document.addEventListener('input', e => {
   enabled && !e.isComposing && isTextField(e.target) && processTextField(e.target);
-});
+}, true);
 
 chrome.runtime.onMessage.addListener(function (req, sender, cb) {
   enabled = req.enabled;
